@@ -1,0 +1,126 @@
+<html>
+ <head> 
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+ </head> 
+ <body style="background-color:#202020"> 
+  <div style="alignment:center"> 
+   <div style="color:white;font-size: 80px; position:relative;top:80px;left:5.5%;" id="display">
+     00:00:00 
+   </div> 
+   <div style="color:white;" id="milisecs">
+     00 
+   </div> 
+  </div> 
+  <div style="position: relative;top:100px;left:5.5%;"> 
+   <button style="width: 100px;height: 30px;border: 3px solid white;border-radius: 50px;background: #202020;color: white;cursor: pointer;outline: none;" id="strtstp" onclick="StartStop()">Start</button> 
+   <button style="width: 100px;height: 30px;border: 3px solid white;border-radius: 50px;background: #202020;color: white;cursor: pointer;outline: none;" onclick="lap()">Lap</button> 
+   <button style="width: 100px;height: 30px;border: 3px solid white;border-radius: 50px;background: #202020;color: white;cursor: pointer;outline: none;" onclick="reset()">Reset</button> 
+  </div> 
+  <script>
+    var milliseconds = 0; 
+    var seconds = 0;
+    var minutes = 0;
+    var hours = 0;
+    var displayms = 0;
+    var displays = 0;
+    var displaym = 0;
+    var displayh = 0;
+    var status = "stopped";
+    var interval = null;
+    var lapcount = 0;
+    function watch()
+    {
+      milliseconds += 5;
+      if(milliseconds === 1000)
+       {
+         milliseconds = 0;
+        seconds++;
+      }
+      if(seconds === 60)
+      {
+        seconds = 0;
+        minutes++;
+      }
+      if(minutes === 60)
+      {
+        minutes = 0;
+        hours++;
+      }
+      
+      if(milliseconds<10)
+      {
+        displayms = "0" + milliseconds.toString();
+      }
+      else
+      {
+        displayms = milliseconds;
+      }
+      
+      if(seconds<10)
+      {
+        displays = "0" + seconds.toString();
+      }
+      else
+      {
+        displays = seconds;
+      }
+      if(minutes<10)
+      {
+        displaym = "0" + minutes.toString();
+      }
+      else
+      {
+        displaym = minutes;
+      }
+      if(hours<10)
+      {
+        displayh = "0" + hours.toString();
+      }
+      else
+      {
+        displayh = hours;
+      }
+      document.getElementById("display").innerHTML= displayh+":"+displaym+":"+displays;
+     document.getElementById("milisecs").innerHTML= displayms;
+    }
+    function StartStop()
+    {
+      if(status === "stopped")
+      {
+        interval = setInterval(watch,10);
+        status = "started";
+        document.getElementById("strtstp").innerHTML= "Stop";
+      }
+      else
+      {
+        clearInterval(interval);
+        status = "stopped";
+        document.getElementById("strtstp").innerHTML= "Start";
+      }
+      }
+      function lap()
+      {
+        lapcount++;
+        let lapcounts = document.createElement('P');
+        lapcounts.innerText="Lap"+-+lapcount;
+        lapcounts.style="color:white; position:relative;left:5.5%;top:110px;"
+        document.body.appendChild(lapcounts);
+        let brkline = document.createElement('hr');
+        brkline.style="color:white; position:relative;top:110px;"
+        document.body.appendChild(brkline);
+        let lap = document.createElement('p');
+        lap.innerText= displayh+":"+displaym+":"+displays;
+        lap.style="color:white; position:relative;left:78%;top:60px;"
+        document.body.appendChild(lap);
+      }
+      function reset()
+      {
+       clearInterval(interval)
+       document.getElementById("display").innerHTML= "00:00:00";
+       document.getElementById("milisecs").innerHTML= "00";
+       document.getElementById("strtstp").innerHTML= "Start";
+       status = "stopped";
+      }     
+  </script> 
+ </body>
+</html>
